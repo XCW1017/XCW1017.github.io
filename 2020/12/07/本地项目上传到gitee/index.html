@@ -1,10 +1,10 @@
 
  <!DOCTYPE HTML>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   
-    <title>本地项目上传到gitee | X先生独立博客</title>
+    <title>本地项目上传到gitee | X先生博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="小饼干">
@@ -15,9 +15,9 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="本地项目上传到gitee">
 <meta property="og:url" content="http://example.com/2020/12/07/%E6%9C%AC%E5%9C%B0%E9%A1%B9%E7%9B%AE%E4%B8%8A%E4%BC%A0%E5%88%B0gitee/index.html">
-<meta property="og:site_name" content="X先生独立博客">
+<meta property="og:site_name" content="X先生博客">
 <meta property="og:description" content="1.本地仓库先执行初始化在项目中打开git命令框输入 git init，会发现文件夹中生成了.git文件夹说明初始化成功  2.建立远程仓库新建一个远程仓库  3.建立连接复制链接并在本地输入命令 git remote origin master 仓库链接   4.上传项目 注意：若新建仓库时勾选了，Readme文件初始化，要先执行 git pull origin master  git add">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123157.png">
 <meta property="og:image" content="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123205.png">
 <meta property="og:image" content="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123211.png">
@@ -30,7 +30,7 @@
 <meta name="twitter:image" content="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123157.png">
 
     
-    <link rel="alternative" href="/atom.xml" title="X先生独立博客" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="X先生博客" type="application/atom+xml">
     
     
     <link rel="icon" href="/img/favicon.ico">
@@ -52,14 +52,14 @@
 <div>
 		
 			<div id="imglogo">
-				<a href="/"><img src="/img/logo.png" alt="X先生独立博客" title="X先生独立博客"/></a>
+				<a href="/"><img src="/img/logo.png" alt="X先生博客" title="X先生博客"/></a>
 			</div>
 			
 			<div id="textlogo">
-				<h1 class="site-name"><a href="/" title="X先生独立博客">X先生独立博客</a></h1>
+				<h1 class="site-name"><a href="/" title="X先生博客">X先生博客</a></h1>
 				<h2 class="blog-motto">爱生活爱编码</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -77,7 +77,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:example.com">
 					</form>
 					
@@ -100,16 +100,14 @@
 		<a href="/about" title="小饼干" target="_blank" itemprop="author">小饼干</a>
 		
   <p class="article-time">
-    <time datetime="2020-12-07T08:21:44.546Z" itemprop="datePublished"> Published 2020-12-07</time>
-    <span id="busuanzi_container_page_pv">
-    总阅读<span id="busuanzi_value_page_pv"></span>次
-	</span>
+    <time datetime="2020-12-07T08:21:44.546Z" itemprop="datePublished"> 发表于 2020-12-07</time>
+   
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%85%88%E6%89%A7%E8%A1%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">1.本地仓库先执行初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BB%BA%E7%AB%8B%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">2.</span> <span class="toc-text">2.建立远程仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">3.建立连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%8A%E4%BC%A0%E9%A1%B9%E7%9B%AE"><span class="toc-number">4.</span> <span class="toc-text">4.上传项目</span></a></li></ol>
 		
@@ -141,7 +139,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://example.com/2020/12/07/%E6%9C%AC%E5%9C%B0%E9%A1%B9%E7%9B%AE%E4%B8%8A%E4%BC%A0%E5%88%B0gitee/" data-title="本地项目上传到gitee | X先生独立博客" data-tsina="" class="share clearfix">
+	  <div data-url="http://example.com/2020/12/07/%E6%9C%AC%E5%9C%B0%E9%A1%B9%E7%9B%AE%E4%B8%8A%E4%BC%A0%E5%88%B0gitee/" data-title="本地项目上传到gitee | X先生博客" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -170,22 +168,22 @@
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%85%88%E6%89%A7%E8%A1%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">1.本地仓库先执行初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BB%BA%E7%AB%8B%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">2.</span> <span class="toc-text">2.建立远程仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">3.建立连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%8A%E4%BC%A0%E9%A1%B9%E7%9B%AE"><span class="toc-number">4.</span> <span class="toc-text">4.上传项目</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="github-card">
-<p class="asidetitle">Github Card</p>
+<p class="asidetitle">Github 名片</p>
 <div class="github-card" data-github="wwblog" data-theme="medium"></div>
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
@@ -197,7 +195,7 @@
   
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -237,12 +235,12 @@
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
   <div class="weiboshow">
-  <p class="asidetitle">Weibo</p>
-    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=b3593ceb&dpc=1"></iframe>
+  <p class="asidetitle">新浪微博</p>
+  <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=6189300786&verifier=a49d3005&dpc=1"></iframe>
 </div>
 
 
@@ -277,27 +275,23 @@
 		
 		
 		
+		<a href="mailto:15933077087@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
 	</div>
 			
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		© 2020 
 		
 		<a href="/about" target="_blank" title="小饼干">小饼干</a>
 		
 		
 		</p>
 </div>
-
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
-<span id="busuanzi_container_site_pv">
-    &nbsp;&nbsp;Total visits:&nbsp;<span id="busuanzi_value_site_pv"></span>
-</span>
-<span id="busuanzi_container_site_uv">
-  &nbsp;&nbsp;You are Visiter No.<span id="busuanzi_value_site_uv"></span>
-</span>
+
 </footer>
     <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
@@ -481,7 +475,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
