@@ -4,22 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>X先生独立博客</title>
+    <title>SpringCloud介绍 | X先生独立博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="小饼干">
     
 
     
-    <meta name="description" content="hello,every body!~">
-<meta property="og:type" content="website">
-<meta property="og:title" content="X先生独立博客">
-<meta property="og:url" content="http://example.com/index.html">
+    <meta name="description" content="1.    注册中心1.1 eureka介绍： Eureka是Netflix开发的服务发现框架，用于定位运行在AWS域中的中间层服务，以达到负载均衡和中间层服务故障转移的目的  用法： 服务端搭建：  ​    引入Eureka-Server依赖 1234&lt;dependency&gt;    &lt;groupId&gt;org.springframework.cloud&lt;&#x2F;group">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud介绍">
+<meta property="og:url" content="http://example.com/2020/12/08/SpringCloud/index.html">
 <meta property="og:site_name" content="X先生独立博客">
-<meta property="og:description" content="hello,every body!~">
+<meta property="og:description" content="1.    注册中心1.1 eureka介绍： Eureka是Netflix开发的服务发现框架，用于定位运行在AWS域中的中间层服务，以达到负载均衡和中间层服务故障转移的目的  用法： 服务端搭建：  ​    引入Eureka-Server依赖 1234&lt;dependency&gt;    &lt;groupId&gt;org.springframework.cloud&lt;&#x2F;group">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/Administrator/Desktop/tarminal.assets/image-20201022183731066.png">
+<meta property="article:published_time" content="2020-12-08T01:45:28.932Z">
+<meta property="article:modified_time" content="2020-12-08T01:46:37.772Z">
 <meta property="article:author" content="小饼干">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/Administrator/Desktop/tarminal.assets/image-20201022183731066.png">
 
     
     <link rel="alternative" href="/atom.xml" title="X先生独立博客" type="application/atom+xml">
@@ -79,142 +83,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2020/12/08/雪花算法全局唯一ID/" title="实现全局唯一ID" itemprop="url">实现全局唯一ID</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="小饼干" target="_blank" itemprop="author">小饼干</a>
-		
-  <p class="article-time">
-    <time datetime="2020-12-08T01:47:47.001Z" itemprop="datePublished"> Published 2020-12-08</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="集群高并发情况下如何保证分布式唯一ID全局生成"><a href="#集群高并发情况下如何保证分布式唯一ID全局生成" class="headerlink" title="集群高并发情况下如何保证分布式唯一ID全局生成"></a>集群高并发情况下如何保证分布式唯一ID全局生成</h2><blockquote>
-<p>工程分布式部署，要求抗住高并发。并且生成的id是根据时间自增的</p>
-</blockquote>
-<h2 id="1-ID生成规则"><a href="#1-ID生成规则" class="headerlink" title="1.ID生成规则"></a>1.ID生成规则</h2><ul>
-<li><strong>全局唯一：</strong><ul>
-<li>不能出现重复ID号；</li>
-</ul>
-</li>
-<li><strong>趋势递增：</strong><ul>
-<li>在MySQL的innoDB.引擎中使用的是聚集索引，由于多数RDBMS使用B+tree的数据结构来存储索引数据，在主键的选择上面我们应该尽量使用有序的主键保证写入性能;</li>
-</ul>
-</li>
-<li><strong>单调递增：</strong><ul>
-<li>保证下一个大于上一个；例如事务版本号，IM增量消息，排序等排序要求;</li>
-</ul>
-</li>
-<li><strong>信息安全：</strong><ul>
-<li>如果ID是连续的，恶意用户的扒取工作就非常容易做了，直接按照顺序下载指定URL即可;如果是订单号就更危险了，竞争对手直接知道我们一天的单量。所以在一些应用场景下，需要ID无规则不规则，让竞争对手不好猜。</li>
-</ul>
-</li>
-<li><strong>含时间戳：</strong><ul>
-<li>可以在开发中快速了解分布式ID的生成时间。</li>
-</ul>
-</li>
-</ul>
-<h2 id="2-ID生成的系统可用性"><a href="#2-ID生成的系统可用性" class="headerlink" title="2.ID生成的系统可用性"></a>2.ID生成的系统可用性</h2><ul>
-<li>高可用<ul>
-<li>发一个获取分布式ID的请求，服务器就要保证99.999%的情况下给我创建一个唯一分布式ID</li>
-</ul>
-</li>
-<li>低延迟<ul>
-<li>发一个获取分布式ID的请求，服务器要快速，急速。</li>
-</ul>
-</li>
-<li>高QPS<ul>
-<li>例如一口气10万个创建分布式ID请求，服务器要扛得住压力。</li>
-</ul>
-</li>
-</ul>
-<h2 id="3-一般方案"><a href="#3-一般方案" class="headerlink" title="3.一般方案"></a>3.一般方案</h2><ol>
-<li><p><strong>UUID：</strong></p>
-<p>字符串太长，不自增，影响存储性能；</p>
-</li>
-<li><p><strong>数据库自增：</strong></p>
-</li>
-</ol>
-<ol start="3">
-<li><p><strong>Redis生成策略：</strong></p>
-<p>通过使用incr，incrby实现，缺陷：维护多台Redis麻烦</p>
-</li>
-</ol>
-<h2 id="4-SnowFlake雪花算法"><a href="#4-SnowFlake雪花算法" class="headerlink" title="4.SnowFlake雪花算法"></a>4.SnowFlake雪花算法</h2><ul>
-<li><p>算法原理：生成一个64bit大小的整数</p>
-<ol>
-<li><p><strong>1bit</strong>，不用，因；为二进制中最高位是符号位，1表示负数，0表示正数。生成的id一般都是用整数，所以最高位固定为0；</p>
-</li>
-<li><p><strong>41bit-时间戳</strong>，用来记录时间戳，毫秒级。</p>
-<p>41位可以表示2^{41}-1个数字，减1是因为可表示的数值范围是从0开始算的，而不是1。(2^{41})/(1000<em>60</em>60* 24*365)=69年</p>
-</li>
-<li><p><strong>10bit-工作机器id</strong>:用来记录工作机器id.</p>
-<p>可以部署2^10=1024个节点，包括5位datacenterId和5位workerId；0-31表示不同的datecenterId和workerId；</p>
-</li>
-<li><p><strong>12bit-序列号</strong>，序列号，用来记录同毫秒内产生的不同id。</p>
-<p>表示最大正整数2^12-1=4095，同一机器，同一毫秒内产生的ID序号；</p>
-</li>
-</ol>
-</li>
-</ul>
-<p>使用糊涂工具使用雪花算法</p>
-<p>下载地址：<a target="_blank" rel="noopener" href="https://www.hutool.cn/docs/#/">https://www.hutool.cn/docs/#/</a></p>
-<ul>
-<li><p>引入依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.hutool<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hutool-all<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>5.4.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(&quot;/hutool&quot;)</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Long <span class="title">hutool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">long</span> workerId = <span class="number">1</span>;<span class="comment">// 工作ID 0-31</span></span><br><span class="line">		<span class="keyword">long</span> datacenterId = <span class="number">1</span>;<span class="comment">// 数据中心ID 0-31</span></span><br><span class="line">		</span><br><span class="line">		Snowflake snowflake = IdUtil.createSnowflake(workerId, datacenterId);<span class="comment">//传入参数</span></span><br><span class="line">		<span class="keyword">long</span> nextId = snowflake.nextId();<span class="comment">//获得long类型Id</span></span><br><span class="line">		System.out.println(nextId);<span class="comment">//输出到控制台</span></span><br><span class="line">		</span><br><span class="line">		<span class="keyword">return</span> nextId;<span class="comment">//返回到页面</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2020/12/08/SpringCloud/" title="SpringCloud介绍" itemprop="url">SpringCloud介绍</a>
@@ -228,9 +100,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <h1 id="1-注册中心"><a href="#1-注册中心" class="headerlink" title="1.    注册中心"></a>1.    注册中心</h1><h2 id="1-1-eureka"><a href="#1-1-eureka" class="headerlink" title="1.1 eureka"></a>1.1 eureka</h2><h3 id="介绍："><a href="#介绍：" class="headerlink" title="介绍："></a>介绍：</h3><blockquote>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="toc-number">1.</span> <span class="toc-text">1.    注册中心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-eureka"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 eureka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A"><span class="toc-number">1.1.2.</span> <span class="toc-text">用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%90%AD%E5%BB%BA%EF%BC%9A"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">服务端搭建：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%90%AD%E5%BB%BA%EF%BC%9A"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">客户端搭建：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="toc-number">1.1.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-zookeeper"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#zookeeper%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">zookeeper的安装</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zookeeper%E4%BE%9D%E8%B5%96%E4%BA%8Ejdk%EF%BC%8C%E9%9C%80%E8%A6%81%E5%AE%89%E8%A3%85jdk"><span class="toc-number">1.2.3.</span> <span class="toc-text">zookeeper依赖于jdk，需要安装jdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85zookeeper"><span class="toc-number">1.2.4.</span> <span class="toc-text">安装zookeeper</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8zookeeper"><span class="toc-number">1.3.</span> <span class="toc-text">启动zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%EF%BC%9A"><span class="toc-number">1.3.0.1.</span> <span class="toc-text">项目搭建：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5zookeeper"><span class="toc-number">1.3.0.2.</span> <span class="toc-text">项目引入zookeeper</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEzookeeper%E6%9C%8D%E5%8A%A1%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.0.3.</span> <span class="toc-text">配置zookeeper服务地址</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-consul"><span class="toc-number">1.4.</span> <span class="toc-text">1.3 consul</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-2"><span class="toc-number">1.4.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-2"><span class="toc-number">1.4.2.</span> <span class="toc-text">用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#consul%E5%AE%89%E8%A3%85"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">consul安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cmd%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">cmd命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%EF%BC%9A-1"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">项目搭建：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-2"><span class="toc-number">1.4.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-nacos"><span class="toc-number">1.5.</span> <span class="toc-text">1.4    nacos</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-3"><span class="toc-number">1.5.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">1.5.2.</span> <span class="toc-text">使用：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">2.    服务调用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-ribbon-RestTemplate"><span class="toc-number">2.1.</span> <span class="toc-text">2.1    ribbon+RestTemplate</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-4"><span class="toc-number">2.1.1.</span> <span class="toc-text">介绍：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ribbon"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">ribbon</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RestTemplate"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">RestTemplate</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-3"><span class="toc-number">2.1.2.</span> <span class="toc-text">用法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-3"><span class="toc-number">2.1.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Fegin-ribbon"><span class="toc-number">2.2.</span> <span class="toc-text">2.2    Fegin+ribbon</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-5"><span class="toc-number">2.2.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Feign"><span class="toc-number">2.2.2.</span> <span class="toc-text">Feign</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-4"><span class="toc-number">2.2.3.</span> <span class="toc-text">用法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-4"><span class="toc-number">2.2.4.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-ribbon%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">2.3.</span> <span class="toc-text">2.3    ribbon负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-6"><span class="toc-number">2.3.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-5"><span class="toc-number">2.3.2.</span> <span class="toc-text">用法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-5"><span class="toc-number">2.3.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Fegin%E5%BB%B6%E8%BF%9F%E7%AD%89%E5%BE%85"><span class="toc-number">2.4.</span> <span class="toc-text">2.4    Fegin延迟等待</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-6"><span class="toc-number">2.4.1.</span> <span class="toc-text">用法：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-Fegin%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB"><span class="toc-number">2.5.</span> <span class="toc-text">2.5    Fegin日志级别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-7"><span class="toc-number">2.5.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-7"><span class="toc-number">2.5.2.</span> <span class="toc-text">用法：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%9C%8D%E5%8A%A1%E9%99%8D%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">3.  服务降级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hystrix"><span class="toc-number">3.1.</span> <span class="toc-text">Hystrix</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-8"><span class="toc-number">3.1.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A-1"><span class="toc-number">3.1.2.</span> <span class="toc-text">使用：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%86%94%E6%96%AD"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">熔断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%99%8D%E7%BA%A7%E5%A4%84%E7%90%86%E4%B8%80"><span class="toc-number">3.1.2.2.</span> <span class="toc-text">全局降级处理一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%99%8D%E7%BA%A7%E5%A4%84%E7%90%86%E4%BA%8C"><span class="toc-number">3.1.2.3.</span> <span class="toc-text">全局降级处理二</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dashboard%E4%BB%AA%E8%A1%A8%E7%9B%98"><span class="toc-number">3.1.2.4.</span> <span class="toc-text">dashboard仪表盘</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-6"><span class="toc-number">3.1.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sentinl"><span class="toc-number">3.2.</span> <span class="toc-text">Sentinl</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-9"><span class="toc-number">3.2.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-8"><span class="toc-number">3.2.2.</span> <span class="toc-text">用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B5%81%E6%8E%A7%E8%A7%84%E5%88%99"><span class="toc-number">3.2.2.1.</span> <span class="toc-text">1 流控规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%B5%81%E6%8E%A7%E6%95%88%E6%9E%9C"><span class="toc-number">3.2.2.2.</span> <span class="toc-text">2 流控效果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E9%99%8D%E7%BA%A7%E4%BD%BF%E7%94%A8"><span class="toc-number">3.2.2.3.</span> <span class="toc-text">3 降级使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E7%83%AD%E7%82%B9%E9%99%90%E6%B5%81"><span class="toc-number">3.2.2.4.</span> <span class="toc-text">4 热点限流</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9AblockHandler%E6%8C%87%E5%90%91%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%AD%E4%B8%80%E5%AE%9A%E8%A6%81%E6%8C%87%E5%AE%9A%E5%8F%82%E6%95%B0%EF%BC%9B"><span class="toc-number">3.2.3.</span> <span class="toc-text">注意：blockHandler指向的方法中一定要指定参数；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SentinelResource%E5%8F%AA%E5%A4%84%E7%90%86sentinel%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%A7%84%E5%88%99%EF%BC%8C%E4%B8%8D%E5%A4%84%E7%90%86%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BC%82%E5%B8%B8"><span class="toc-number">3.2.4.</span> <span class="toc-text">SentinelResource只处理sentinel控制台规则，不处理运行时异常</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E7%B3%BB%E7%BB%9F%E8%A7%84%E5%88%99"><span class="toc-number">3.2.4.1.</span> <span class="toc-text">5 系统规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-SentinelResource%E5%B1%9E%E6%80%A7"><span class="toc-number">3.2.4.2.</span> <span class="toc-text">6 SentinelResource属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD"><span class="toc-number">3.2.4.3.</span> <span class="toc-text">7 服务熔断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%EF%BC%9Asentinel-ribbon-fegin%E6%B6%88%E8%B4%B9%E8%80%85%E9%99%8D%E7%BA%A7%E5%A4%84%E7%90%86"><span class="toc-number">3.2.5.</span> <span class="toc-text">实现：sentinel+ribbon+fegin消费者降级处理;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8%E6%96%B9pom"><span class="toc-number">3.2.6.</span> <span class="toc-text">服务调用方pom</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yml%E9%85%8D%E7%BD%AE%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%EF%BC%8Csentinel%E4%B8%AD%E5%BF%83%EF%BC%8C%E6%BF%80%E6%B4%BBfeign%E6%94%AF%E6%8C%81"><span class="toc-number">3.2.7.</span> <span class="toc-text">yml配置注册中心，sentinel中心，激活feign支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B0%81%E8%A3%85%E8%BF%94%E5%9B%9Ejson%E7%9A%84%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">3.2.8.</span> <span class="toc-text">创建封装返回json的实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#service%E5%88%9B%E5%BB%BAfegin%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.2.9.</span> <span class="toc-text">service创建fegin接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%9C%E5%BA%95%E5%AE%9E%E7%8E%B0%E7%B1%BBFeignServiceFallback-java"><span class="toc-number">3.2.10.</span> <span class="toc-text">兜底实现类FeignServiceFallback.java</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#controller%E8%B0%83%E7%94%A8service"><span class="toc-number">3.2.11.</span> <span class="toc-text">controller调用service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E7%B1%BB%E5%BC%80%E5%90%AFfegin%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%AB%E6%8F%8F"><span class="toc-number">3.2.12.</span> <span class="toc-text">启动类开启fegin客户端扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E7%AB%AF%EF%BC%9A-%E8%AE%BF%E9%97%AEhttp-localhost-84-consumer-paymentSql-1"><span class="toc-number">3.2.13.</span> <span class="toc-text">启动客户端服务端： 访问http:&#x2F;&#x2F;localhost:84&#x2F;consumer&#x2F;paymentSql&#x2F;1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%85%B3%E9%97%AD%E4%BC%9A%E5%90%AF%E7%94%A8%E5%85%9C%E5%BA%95%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.14.</span> <span class="toc-text">客户端服务关闭会启用兜底方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-sentinel%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">3.2.14.1.</span> <span class="toc-text">8 sentinel持久化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9springcloud25-alibaba-sentinel8401"><span class="toc-number">3.2.15.</span> <span class="toc-text">修改springcloud25-alibaba-sentinel8401</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-7"><span class="toc-number">3.2.16.</span> <span class="toc-text">注意：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3"><span class="toc-number">4.</span> <span class="toc-text">4.    服务网关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gateway%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">Gateway介绍：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E7%89%B9%E7%82%B9%EF%BC%9A%E8%B7%AF%E7%94%B1%E3%80%81%E6%96%AD%E8%A8%80%E3%80%81%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">4.1.1.</span> <span class="toc-text">三大特点：路由、断言、过滤器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A-2"><span class="toc-number">4.2.</span> <span class="toc-text">使用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BD%BF%E7%94%A8%E7%BD%91%E5%85%B3"><span class="toc-number">4.3.</span> <span class="toc-text">配置类使用网关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E5%85%B3%E6%96%AD%E8%A8%80"><span class="toc-number">4.4.</span> <span class="toc-text">网关断言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%85%A8%E6%A0%BC%E5%BC%8F%E6%97%B6%E9%97%B4"><span class="toc-number">4.4.0.1.</span> <span class="toc-text">获取全格式时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E6%95%88%E6%9C%9F"><span class="toc-number">4.4.0.2.</span> <span class="toc-text">有效期</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%90%BA%E5%B8%A6cookie%EF%BC%9A"><span class="toc-number">4.4.0.2.1.</span> <span class="toc-text">携带cookie：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%A1%E6%81%AF%E8%AE%BE%E7%BD%AE%EF%BC%9A"><span class="toc-number">4.4.0.2.2.</span> <span class="toc-text">请求头信息设置：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Host%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="toc-number">4.4.0.3.</span> <span class="toc-text">Host配置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F"><span class="toc-number">4.4.0.4.</span> <span class="toc-text">请求方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0"><span class="toc-number">4.4.0.5.</span> <span class="toc-text">请求参数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4"><span class="toc-number">4.5.</span> <span class="toc-text">网关过滤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83"><span class="toc-number">5.</span> <span class="toc-text">5.    配置中心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-10"><span class="toc-number">5.1.</span> <span class="toc-text">介绍：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E4%BE%BF%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86%EF%BC%8C%E5%AE%9E%E6%97%B6%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%89%80%E4%BB%A5%E9%9C%80%E8%A6%81%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E7%BB%84%E4%BB%B6%EF%BC%8C%E5%9C%A8Spring-Cloud%E4%B8%AD%EF%BC%8C%E6%9C%89%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E7%BB%84%E4%BB%B6spring-cloud-config-%EF%BC%8C%E5%AE%83%E6%94%AF%E6%8C%81%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E6%94%BE%E5%9C%A8%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%86%85%E5%AD%98%E4%B8%AD%EF%BC%88%E5%8D%B3%E6%9C%AC%E5%9C%B0%EF%BC%89%EF%BC%8C%E4%B9%9F%E6%94%AF%E6%8C%81%E6%94%BE%E5%9C%A8%E8%BF%9C%E7%A8%8BGit%E4%BB%93%E5%BA%93%E4%B8%AD"><span class="toc-number">5.1.0.1.</span> <span class="toc-text">方便服务配置文件统一管理，实时更新，所以需要分布式配置中心组件，在Spring Cloud中，有分布式配置中心组件spring cloud config ，它支持配置服务放在配置服务的内存中（即本地），也支持放在远程Git仓库中</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Config"><span class="toc-number">5.2.</span> <span class="toc-text">Config</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BA%8E%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-number">5.2.1.</span> <span class="toc-text">客户端于服务端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%88%B7%E6%96%B0"><span class="toc-number">5.2.2.</span> <span class="toc-text">手动刷新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos"><span class="toc-number">5.3.</span> <span class="toc-text">Nacos</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-11"><span class="toc-number">5.3.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A-3"><span class="toc-number">5.3.2.</span> <span class="toc-text">使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-8"><span class="toc-number">5.3.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos%E7%9A%84%E9%85%8D%E7%BD%AE%E5%88%86%E7%B1%BB"><span class="toc-number">5.4.</span> <span class="toc-text">Nacos的配置分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">5.5.</span> <span class="toc-text">Nacos持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.5.1.</span> <span class="toc-text">本地实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.5.2.</span> <span class="toc-text">集群实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%9C%8D%E5%8A%A1%E6%80%BB%E7%BA%BFBus"><span class="toc-number">6.</span> <span class="toc-text">6.    服务总线Bus</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-RibbitMQ%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">6.1.</span> <span class="toc-text">6.1  RibbitMQ环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-Bus%E4%BD%BF%E7%94%A8"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 Bus使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-9"><span class="toc-number">6.2.1.</span> <span class="toc-text">注意：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E6%B6%88%E6%81%AF%E9%A9%B1%E5%8A%A8Stream"><span class="toc-number">7.</span> <span class="toc-text">7.    消息驱动Stream</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-12"><span class="toc-number">7.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-Stream%E7%9A%84%E7%94%9F%E4%BA%A7%E8%80%85"><span class="toc-number">7.2.</span> <span class="toc-text">7.1 Stream的生产者</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAspringcloud18-stream-ribbitmq-provider-8801-%E9%A1%B9%E7%9B%AE"><span class="toc-number">7.2.0.0.1.</span> <span class="toc-text">创建springcloud18-stream-ribbitmq-provider-8801 项目</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-Stream%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-number">7.3.</span> <span class="toc-text">7.2 Stream消费者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-3-Stream%E6%8C%81%E4%B9%85%E5%8C%96%E8%AE%BE%E7%BD%AE"><span class="toc-number">7.4.</span> <span class="toc-text">7.3 Stream持久化设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E8%BF%B0%E8%AE%BE%E7%BD%AE%E6%88%91%E4%BB%AC%E7%9A%84%E6%B6%88%E8%B4%B9%E8%80%85%EF%BC%8C%E5%9C%A8%E7%94%9F%E4%BA%A7%E8%80%85%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E5%90%8E%EF%BC%8C%E6%B6%88%E8%B4%B9%E8%80%85%E5%90%AF%E5%8A%A8%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96%E6%B6%88%E6%81%AF%EF%BC%8C%E6%89%80%E4%BB%A5%E4%B8%BA%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E4%B8%BA%E7%BB%84"><span class="toc-number">7.4.1.</span> <span class="toc-text">上述设置我们的消费者，在生产者发送消息后，消费者启动无法获取消息，所以为实现消息持久化需要配置为组;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.5.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E9%93%BE%E8%B7%AF%E8%B7%9F%E8%B8%AA"><span class="toc-number">8.</span> <span class="toc-text">8.    链路跟踪</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-13"><span class="toc-number">8.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zipkin%E6%9C%8D%E5%8A%A1"><span class="toc-number">8.2.</span> <span class="toc-text">zipkin服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A-4"><span class="toc-number">8.3.</span> <span class="toc-text">使用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-10"><span class="toc-number">8.4.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-Alibaba"><span class="toc-number">9.</span> <span class="toc-text">9. Alibaba</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-seata%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-number">10.</span> <span class="toc-text">10.    seata分布式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#seata%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">10.1.</span> <span class="toc-text">seata环境配置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">10.    版本问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#spring-boot%E7%89%88%E6%9C%AC%E6%9F%A5%E8%AF%A2%EF%BC%9A-https-mvnrepository-com-artifact-org-springframework-boot-spring-boot-dependencies"><span class="toc-number">11.0.0.0.1.</span> <span class="toc-text">spring boot版本查询： https:&#x2F;&#x2F;mvnrepository.com&#x2F;artifact&#x2F;org.springframework.boot&#x2F;spring-boot-dependencies</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#spring-cloud%E7%89%88%E6%9C%AC%E6%9F%A5%E8%AF%A2%EF%BC%9Ahttps-mvnrepository-com-artifact-org-springframework-cloud-spring-cloud-dependencies"><span class="toc-number">11.0.0.0.2.</span> <span class="toc-text">spring cloud版本查询：https:&#x2F;&#x2F;mvnrepository.com&#x2F;artifact&#x2F;org.springframework.cloud&#x2F;spring-cloud-dependencies</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AEspring-cloud-%E9%80%89%E6%8B%A9Boot-https-start-spring-io-actuator-info"><span class="toc-number">11.0.0.0.3.</span> <span class="toc-text">根据spring cloud 选择Boot https:&#x2F;&#x2F;start.spring.io&#x2F;actuator&#x2F;info</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="1-注册中心"><a href="#1-注册中心" class="headerlink" title="1.    注册中心"></a>1.    注册中心</h1><h2 id="1-1-eureka"><a href="#1-1-eureka" class="headerlink" title="1.1 eureka"></a>1.1 eureka</h2><h3 id="介绍："><a href="#介绍：" class="headerlink" title="介绍："></a>介绍：</h3><blockquote>
 <p>Eureka是Netflix开发的服务发现框架，用于定位运行在AWS域中的中间层服务，以达到负载均衡和中间层服务故障转移的目的</p>
 </blockquote>
 <h3 id="用法："><a href="#用法：" class="headerlink" title="用法："></a>用法：</h3><blockquote>
@@ -1240,14 +1119,9 @@
 <h5 id="spring-cloud版本查询：https-mvnrepository-com-artifact-org-springframework-cloud-spring-cloud-dependencies"><a href="#spring-cloud版本查询：https-mvnrepository-com-artifact-org-springframework-cloud-spring-cloud-dependencies" class="headerlink" title="spring cloud版本查询：https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies"></a>spring cloud版本查询：<a target="_blank" rel="noopener" href="https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies">https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies</a></h5></blockquote>
 <blockquote>
 <h5 id="根据spring-cloud-选择Boot-https-start-spring-io-actuator-info"><a href="#根据spring-cloud-选择Boot-https-start-spring-io-actuator-info" class="headerlink" title="根据spring cloud 选择Boot https://start.spring.io/actuator/info"></a>根据spring cloud 选择Boot <a target="_blank" rel="noopener" href="https://start.spring.io/actuator/info">https://start.spring.io/actuator/info</a></h5></blockquote>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 
@@ -1255,226 +1129,53 @@
 
 
 
-
-<div class="comments-count">
+	<div class="article-share" id="share">
 	
-</div>
+	  <div data-url="http://example.com/2020/12/08/SpringCloud/" data-title="SpringCloud介绍 | X先生独立博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2020/12/07/github搭建个人博客/" title="GitHub+hexo搭建个人博客" itemprop="url">GitHub+hexo搭建个人博客</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="小饼干" target="_blank" itemprop="author">小饼干</a>
-		
-  <p class="article-time">
-    <time datetime="2020-12-07T09:23:36.369Z" itemprop="datePublished"> Published 2020-12-07</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="1-安装node环境"><a href="#1-安装node环境" class="headerlink" title="1.安装node环境"></a>1.安装node环境</h2><p>首先我们在本机要安装Node环境，我们可以直接来到Node.js官网：<a target="_blank" rel="noopener" href="https://nodejs.org/en/">https://nodejs.org/en/</a></p>
-<p>下载后，直接双击，然后就是一直下一步下一步的傻瓜式操作。这里要注意的是：<strong>有的人的电脑可能已经安装好Node环境，已经安装好的可以通过在cmd窗口执行下面的命令查看Node版本</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-安装Git环境"><a href="#2-安装Git环境" class="headerlink" title="2.安装Git环境"></a>2.安装Git环境</h2><p>Git官网下载：<code>https://git-scm.com/downloads</code></p>
-<h2 id="3-安装hexo"><a href="#3-安装hexo" class="headerlink" title="3.安装hexo"></a>3.安装hexo</h2><p>新建文件夹MyBlog</p>
-<p>在E:\MyBlog目录下，右击打开<code>Git Bash</code>，接着在Gir Bash中执行：<code>npm install -g hexo</code>命令，当看到下图所示表示安装完成，第一次可能等的时间会比较长</p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207173224.png" alt="image-20201207173224759"></p>
-<p>执行 <code>hexo init</code> 初始化项目； </p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207173244.png" alt="image-20201207173243982"></p>
-<p>初始化成功后根目录下会生成相关文件；</p>
-<ol>
-<li><strong>source</strong>：该文件夹是存放我们自己文章的地方，文章存放在该目录下的_posts文件夹中。</li>
-<li><strong>themes</strong>：用于存放博客的主题信息。</li>
-<li><strong>_config.yml</strong>：是hexo博客的配置文件，很多配置信息都在这里面。</li>
-</ol>
-<p>接下来执行：<code>npm install</code>和<code>hexo g</code>，使用<strong>npm源安装所依赖的组件和编译生成静态页面</strong>。</p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207173512.png" alt="image-20201207173512224"></p>
-<p>执行完成后根目录会生成 <code>public</code>文件夹，该文件夹用于存放静态页面</p>
-<p>启动hexo执行命令 <code>hexo s</code>，会告诉你浏览器访问<code>http://localhost:4000</code>搭建成功</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2020/12/07/vue-use/" title="Vue使用" itemprop="url">Vue使用</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="小饼干" target="_blank" itemprop="author">小饼干</a>
-		
-  <p class="article-time">
-    <time datetime="2020-12-07T08:26:19.469Z" itemprop="datePublished"> Published 2020-12-07</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="vue安装"><a href="#vue安装" class="headerlink" title="vue安装"></a>vue安装</h2><p>参考文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/liluxiang/p/9592003.html">https://www.cnblogs.com/liluxiang/p/9592003.html</a></p>
-<p>安装vue之前，先安装node，node中包含一个npm</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#查看node版本</span><br><span class="line">node -v</span><br><span class="line">#查看npm版本</span><br><span class="line">npm -v</span><br><span class="line">#安装vue-cli（--global 意思是全局安装  这羊Vue会安装到 安装node 的文件夹下 否则会安装到 当前目录）</span><br><span class="line">npm install --<span class="built_in">global</span> vue-cli</span><br><span class="line">#查看vue版本号</span><br><span class="line">vue --version</span><br><span class="line">vue -V</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="创建vue项目"><a href="#创建vue项目" class="headerlink" title="创建vue项目"></a>创建vue项目</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#创建一个基于webpack模板的项目（vue01项目文件夹）</span><br><span class="line">vue init webpack vue01</span><br><span class="line">	#成功后填写项目属性；</span><br><span class="line">    Project name 项目名称</span><br><span class="line">    Project description 项目描述</span><br><span class="line">    Author 作者</span><br><span class="line">    vue-router yes 其余选择否</span><br><span class="line">    #should we run npm install.... (是否在工程创建后就去跑 npm 安装依赖 第一个是【是】 最后一个 稍后自己就安装依赖 即 在命令行执行npm install 命令 )</span><br><span class="line"></span><br><span class="line">#安装项目依赖</span><br><span class="line">cd vue01</span><br><span class="line">npm install</span><br><span class="line">#启动项目，默认地址http://localhost:8080/</span><br><span class="line">npm run dev</span><br><span class="line">#项目打包，根目录生成dist文件夹，生成静态页面</span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure>
-
-
-
-<p>执行 npm  run build 会打包生成dist，直接访问则一片空白，这是因为引用资源路径问题；</p>
-<p>我们修改项目目录下config文件夹的index.js文件，重新打包；</p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207162552.png" alt="image-20201203105020336"></p>
-<h2 id="idea导入vue项目"><a href="#idea导入vue项目" class="headerlink" title="idea导入vue项目"></a>idea导入vue项目</h2><h3 id="1-首先创建npm服务器"><a href="#1-首先创建npm服务器" class="headerlink" title="1.首先创建npm服务器"></a>1.首先创建npm服务器</h3><p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207162552.png" alt="image-20201203113725765"></p>
-<h3 id="2-启动项目"><a href="#2-启动项目" class="headerlink" title="2.启动项目"></a>2.启动项目</h3><p>会显示访问路径</p>
-<h2 id="新建VUE页面"><a href="#新建VUE页面" class="headerlink" title="新建VUE页面"></a>新建VUE页面</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">&lt;!--静态内容，View部分--&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">&#x2F;&#x2F;静态内容，Model和vm部分</span><br><span class="line"></span><br><span class="line">    export default &#123;</span><br><span class="line">        name: &quot;module.xcw.api.HelloWord&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">&#x2F;*页面样式，不是必须*&#x2F;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2020/12/08/雪花算法全局唯一ID/" title="实现全局唯一ID">
+  <strong>上一篇：</strong><br/>
+  <span>
+  实现全局唯一ID</span>
+</a>
 </div>
 
 
+<div class="next">
+<a href="/2020/12/07/github搭建个人博客/"  title="GitHub+hexo搭建个人博客">
+ <strong>下一篇：</strong><br/> 
+ <span>GitHub+hexo搭建个人博客
+</span>
+</a>
+</div>
 
+</nav>
 
-<div class="comments-count">
 	
-</div>
-
-</footer>
-
-
-    </article>
 
 
 
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2020/12/07/本地项目上传到gitee/" title="本地项目上传到gitee" itemprop="url">本地项目上传到gitee</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="小饼干" target="_blank" itemprop="author">小饼干</a>
-		
-  <p class="article-time">
-    <time datetime="2020-12-07T08:21:44.546Z" itemprop="datePublished"> Published 2020-12-07</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="1-本地仓库先执行初始化"><a href="#1-本地仓库先执行初始化" class="headerlink" title="1.本地仓库先执行初始化"></a>1.本地仓库先执行初始化</h2><p>在项目中打开git命令框输入 <strong>git init</strong>，会发现文件夹中生成了.git文件夹说明初始化成功</p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123157.png" alt="image-20201207110509533"></p>
-<h2 id="2-建立远程仓库"><a href="#2-建立远程仓库" class="headerlink" title="2.建立远程仓库"></a>2.建立远程仓库</h2><p>新建一个远程仓库</p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123205.png" alt="image-20201207110908992"></p>
-<h2 id="3-建立连接"><a href="#3-建立连接" class="headerlink" title="3.建立连接"></a>3.建立连接</h2><p>复制链接并在本地输入命令 git remote origin master 仓库链接</p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123211.png" alt="image-20201207111438162"></p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123217.png" alt="image-20201207112620751"></p>
-<h2 id="4-上传项目"><a href="#4-上传项目" class="headerlink" title="4.上传项目"></a>4.上传项目</h2><blockquote>
-<p>注意：若新建仓库时勾选了，Readme文件初始化，要先执行 git pull origin master</p>
-</blockquote>
-<p>git add .     将文件放入缓存区；git add . 代表放入所有 git add [文件名]代表放入指定文件</p>
-<p>git commit -m “文件描述”  将缓存区发送到本地仓库</p>
-<p>git push -u origin master 将本地仓库推送到远程仓库</p>
-<p><img src="https://gitee.com/wwwblog/images/raw/master/imgs/20201207123221.png" alt="image-20201207113801017"></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83"><span class="toc-number">1.</span> <span class="toc-text">1.    注册中心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-eureka"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 eureka</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A"><span class="toc-number">1.1.2.</span> <span class="toc-text">用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%90%AD%E5%BB%BA%EF%BC%9A"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">服务端搭建：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%90%AD%E5%BB%BA%EF%BC%9A"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">客户端搭建：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="toc-number">1.1.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-zookeeper"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#zookeeper%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">zookeeper的安装</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zookeeper%E4%BE%9D%E8%B5%96%E4%BA%8Ejdk%EF%BC%8C%E9%9C%80%E8%A6%81%E5%AE%89%E8%A3%85jdk"><span class="toc-number">1.2.3.</span> <span class="toc-text">zookeeper依赖于jdk，需要安装jdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85zookeeper"><span class="toc-number">1.2.4.</span> <span class="toc-text">安装zookeeper</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8zookeeper"><span class="toc-number">1.3.</span> <span class="toc-text">启动zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%EF%BC%9A"><span class="toc-number">1.3.0.1.</span> <span class="toc-text">项目搭建：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5zookeeper"><span class="toc-number">1.3.0.2.</span> <span class="toc-text">项目引入zookeeper</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEzookeeper%E6%9C%8D%E5%8A%A1%E5%9C%B0%E5%9D%80"><span class="toc-number">1.3.0.3.</span> <span class="toc-text">配置zookeeper服务地址</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-1"><span class="toc-number">1.3.1.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-consul"><span class="toc-number">1.4.</span> <span class="toc-text">1.3 consul</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-2"><span class="toc-number">1.4.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-2"><span class="toc-number">1.4.2.</span> <span class="toc-text">用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#consul%E5%AE%89%E8%A3%85"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">consul安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cmd%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">cmd命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%EF%BC%9A-1"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">项目搭建：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-2"><span class="toc-number">1.4.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-nacos"><span class="toc-number">1.5.</span> <span class="toc-text">1.4    nacos</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-3"><span class="toc-number">1.5.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="toc-number">1.5.2.</span> <span class="toc-text">使用：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">2.    服务调用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-ribbon-RestTemplate"><span class="toc-number">2.1.</span> <span class="toc-text">2.1    ribbon+RestTemplate</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-4"><span class="toc-number">2.1.1.</span> <span class="toc-text">介绍：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ribbon"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">ribbon</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RestTemplate"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">RestTemplate</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-3"><span class="toc-number">2.1.2.</span> <span class="toc-text">用法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-3"><span class="toc-number">2.1.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Fegin-ribbon"><span class="toc-number">2.2.</span> <span class="toc-text">2.2    Fegin+ribbon</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-5"><span class="toc-number">2.2.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Feign"><span class="toc-number">2.2.2.</span> <span class="toc-text">Feign</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-4"><span class="toc-number">2.2.3.</span> <span class="toc-text">用法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-4"><span class="toc-number">2.2.4.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-ribbon%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">2.3.</span> <span class="toc-text">2.3    ribbon负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-6"><span class="toc-number">2.3.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-5"><span class="toc-number">2.3.2.</span> <span class="toc-text">用法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-5"><span class="toc-number">2.3.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Fegin%E5%BB%B6%E8%BF%9F%E7%AD%89%E5%BE%85"><span class="toc-number">2.4.</span> <span class="toc-text">2.4    Fegin延迟等待</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-6"><span class="toc-number">2.4.1.</span> <span class="toc-text">用法：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-Fegin%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB"><span class="toc-number">2.5.</span> <span class="toc-text">2.5    Fegin日志级别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-7"><span class="toc-number">2.5.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-7"><span class="toc-number">2.5.2.</span> <span class="toc-text">用法：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%9C%8D%E5%8A%A1%E9%99%8D%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">3.  服务降级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hystrix"><span class="toc-number">3.1.</span> <span class="toc-text">Hystrix</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-8"><span class="toc-number">3.1.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A-1"><span class="toc-number">3.1.2.</span> <span class="toc-text">使用：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%86%94%E6%96%AD"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">熔断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%99%8D%E7%BA%A7%E5%A4%84%E7%90%86%E4%B8%80"><span class="toc-number">3.1.2.2.</span> <span class="toc-text">全局降级处理一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E9%99%8D%E7%BA%A7%E5%A4%84%E7%90%86%E4%BA%8C"><span class="toc-number">3.1.2.3.</span> <span class="toc-text">全局降级处理二</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dashboard%E4%BB%AA%E8%A1%A8%E7%9B%98"><span class="toc-number">3.1.2.4.</span> <span class="toc-text">dashboard仪表盘</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-6"><span class="toc-number">3.1.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sentinl"><span class="toc-number">3.2.</span> <span class="toc-text">Sentinl</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-9"><span class="toc-number">3.2.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A-8"><span class="toc-number">3.2.2.</span> <span class="toc-text">用法：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%B5%81%E6%8E%A7%E8%A7%84%E5%88%99"><span class="toc-number">3.2.2.1.</span> <span class="toc-text">1 流控规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%B5%81%E6%8E%A7%E6%95%88%E6%9E%9C"><span class="toc-number">3.2.2.2.</span> <span class="toc-text">2 流控效果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E9%99%8D%E7%BA%A7%E4%BD%BF%E7%94%A8"><span class="toc-number">3.2.2.3.</span> <span class="toc-text">3 降级使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E7%83%AD%E7%82%B9%E9%99%90%E6%B5%81"><span class="toc-number">3.2.2.4.</span> <span class="toc-text">4 热点限流</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9AblockHandler%E6%8C%87%E5%90%91%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%AD%E4%B8%80%E5%AE%9A%E8%A6%81%E6%8C%87%E5%AE%9A%E5%8F%82%E6%95%B0%EF%BC%9B"><span class="toc-number">3.2.3.</span> <span class="toc-text">注意：blockHandler指向的方法中一定要指定参数；</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SentinelResource%E5%8F%AA%E5%A4%84%E7%90%86sentinel%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%A7%84%E5%88%99%EF%BC%8C%E4%B8%8D%E5%A4%84%E7%90%86%E8%BF%90%E8%A1%8C%E6%97%B6%E5%BC%82%E5%B8%B8"><span class="toc-number">3.2.4.</span> <span class="toc-text">SentinelResource只处理sentinel控制台规则，不处理运行时异常</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E7%B3%BB%E7%BB%9F%E8%A7%84%E5%88%99"><span class="toc-number">3.2.4.1.</span> <span class="toc-text">5 系统规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-SentinelResource%E5%B1%9E%E6%80%A7"><span class="toc-number">3.2.4.2.</span> <span class="toc-text">6 SentinelResource属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD"><span class="toc-number">3.2.4.3.</span> <span class="toc-text">7 服务熔断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%EF%BC%9Asentinel-ribbon-fegin%E6%B6%88%E8%B4%B9%E8%80%85%E9%99%8D%E7%BA%A7%E5%A4%84%E7%90%86"><span class="toc-number">3.2.5.</span> <span class="toc-text">实现：sentinel+ribbon+fegin消费者降级处理;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8%E6%96%B9pom"><span class="toc-number">3.2.6.</span> <span class="toc-text">服务调用方pom</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yml%E9%85%8D%E7%BD%AE%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%EF%BC%8Csentinel%E4%B8%AD%E5%BF%83%EF%BC%8C%E6%BF%80%E6%B4%BBfeign%E6%94%AF%E6%8C%81"><span class="toc-number">3.2.7.</span> <span class="toc-text">yml配置注册中心，sentinel中心，激活feign支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B0%81%E8%A3%85%E8%BF%94%E5%9B%9Ejson%E7%9A%84%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">3.2.8.</span> <span class="toc-text">创建封装返回json的实体类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#service%E5%88%9B%E5%BB%BAfegin%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.2.9.</span> <span class="toc-text">service创建fegin接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%9C%E5%BA%95%E5%AE%9E%E7%8E%B0%E7%B1%BBFeignServiceFallback-java"><span class="toc-number">3.2.10.</span> <span class="toc-text">兜底实现类FeignServiceFallback.java</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#controller%E8%B0%83%E7%94%A8service"><span class="toc-number">3.2.11.</span> <span class="toc-text">controller调用service</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E7%B1%BB%E5%BC%80%E5%90%AFfegin%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%AB%E6%8F%8F"><span class="toc-number">3.2.12.</span> <span class="toc-text">启动类开启fegin客户端扫描</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E7%AB%AF%EF%BC%9A-%E8%AE%BF%E9%97%AEhttp-localhost-84-consumer-paymentSql-1"><span class="toc-number">3.2.13.</span> <span class="toc-text">启动客户端服务端： 访问http:&#x2F;&#x2F;localhost:84&#x2F;consumer&#x2F;paymentSql&#x2F;1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%85%B3%E9%97%AD%E4%BC%9A%E5%90%AF%E7%94%A8%E5%85%9C%E5%BA%95%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.14.</span> <span class="toc-text">客户端服务关闭会启用兜底方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-sentinel%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">3.2.14.1.</span> <span class="toc-text">8 sentinel持久化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9springcloud25-alibaba-sentinel8401"><span class="toc-number">3.2.15.</span> <span class="toc-text">修改springcloud25-alibaba-sentinel8401</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-7"><span class="toc-number">3.2.16.</span> <span class="toc-text">注意：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3"><span class="toc-number">4.</span> <span class="toc-text">4.    服务网关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gateway%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">Gateway介绍：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E7%89%B9%E7%82%B9%EF%BC%9A%E8%B7%AF%E7%94%B1%E3%80%81%E6%96%AD%E8%A8%80%E3%80%81%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">4.1.1.</span> <span class="toc-text">三大特点：路由、断言、过滤器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A-2"><span class="toc-number">4.2.</span> <span class="toc-text">使用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%B1%BB%E4%BD%BF%E7%94%A8%E7%BD%91%E5%85%B3"><span class="toc-number">4.3.</span> <span class="toc-text">配置类使用网关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E5%85%B3%E6%96%AD%E8%A8%80"><span class="toc-number">4.4.</span> <span class="toc-text">网关断言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%85%A8%E6%A0%BC%E5%BC%8F%E6%97%B6%E9%97%B4"><span class="toc-number">4.4.0.1.</span> <span class="toc-text">获取全格式时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E6%95%88%E6%9C%9F"><span class="toc-number">4.4.0.2.</span> <span class="toc-text">有效期</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%90%BA%E5%B8%A6cookie%EF%BC%9A"><span class="toc-number">4.4.0.2.1.</span> <span class="toc-text">携带cookie：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%A1%E6%81%AF%E8%AE%BE%E7%BD%AE%EF%BC%9A"><span class="toc-number">4.4.0.2.2.</span> <span class="toc-text">请求头信息设置：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Host%E9%85%8D%E7%BD%AE%EF%BC%9A"><span class="toc-number">4.4.0.3.</span> <span class="toc-text">Host配置：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F"><span class="toc-number">4.4.0.4.</span> <span class="toc-text">请求方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0"><span class="toc-number">4.4.0.5.</span> <span class="toc-text">请求参数</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E5%85%B3%E8%BF%87%E6%BB%A4"><span class="toc-number">4.5.</span> <span class="toc-text">网关过滤</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83"><span class="toc-number">5.</span> <span class="toc-text">5.    配置中心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-10"><span class="toc-number">5.1.</span> <span class="toc-text">介绍：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E4%BE%BF%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86%EF%BC%8C%E5%AE%9E%E6%97%B6%E6%9B%B4%E6%96%B0%EF%BC%8C%E6%89%80%E4%BB%A5%E9%9C%80%E8%A6%81%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E7%BB%84%E4%BB%B6%EF%BC%8C%E5%9C%A8Spring-Cloud%E4%B8%AD%EF%BC%8C%E6%9C%89%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E7%BB%84%E4%BB%B6spring-cloud-config-%EF%BC%8C%E5%AE%83%E6%94%AF%E6%8C%81%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E6%94%BE%E5%9C%A8%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%86%85%E5%AD%98%E4%B8%AD%EF%BC%88%E5%8D%B3%E6%9C%AC%E5%9C%B0%EF%BC%89%EF%BC%8C%E4%B9%9F%E6%94%AF%E6%8C%81%E6%94%BE%E5%9C%A8%E8%BF%9C%E7%A8%8BGit%E4%BB%93%E5%BA%93%E4%B8%AD"><span class="toc-number">5.1.0.1.</span> <span class="toc-text">方便服务配置文件统一管理，实时更新，所以需要分布式配置中心组件，在Spring Cloud中，有分布式配置中心组件spring cloud config ，它支持配置服务放在配置服务的内存中（即本地），也支持放在远程Git仓库中</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Config"><span class="toc-number">5.2.</span> <span class="toc-text">Config</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BA%8E%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-number">5.2.1.</span> <span class="toc-text">客户端于服务端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%88%B7%E6%96%B0"><span class="toc-number">5.2.2.</span> <span class="toc-text">手动刷新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos"><span class="toc-number">5.3.</span> <span class="toc-text">Nacos</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-11"><span class="toc-number">5.3.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A-3"><span class="toc-number">5.3.2.</span> <span class="toc-text">使用：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-8"><span class="toc-number">5.3.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos%E7%9A%84%E9%85%8D%E7%BD%AE%E5%88%86%E7%B1%BB"><span class="toc-number">5.4.</span> <span class="toc-text">Nacos的配置分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">5.5.</span> <span class="toc-text">Nacos持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.5.1.</span> <span class="toc-text">本地实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.5.2.</span> <span class="toc-text">集群实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E6%9C%8D%E5%8A%A1%E6%80%BB%E7%BA%BFBus"><span class="toc-number">6.</span> <span class="toc-text">6.    服务总线Bus</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-RibbitMQ%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">6.1.</span> <span class="toc-text">6.1  RibbitMQ环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-Bus%E4%BD%BF%E7%94%A8"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 Bus使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-9"><span class="toc-number">6.2.1.</span> <span class="toc-text">注意：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E6%B6%88%E6%81%AF%E9%A9%B1%E5%8A%A8Stream"><span class="toc-number">7.</span> <span class="toc-text">7.    消息驱动Stream</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-12"><span class="toc-number">7.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-Stream%E7%9A%84%E7%94%9F%E4%BA%A7%E8%80%85"><span class="toc-number">7.2.</span> <span class="toc-text">7.1 Stream的生产者</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAspringcloud18-stream-ribbitmq-provider-8801-%E9%A1%B9%E7%9B%AE"><span class="toc-number">7.2.0.0.1.</span> <span class="toc-text">创建springcloud18-stream-ribbitmq-provider-8801 项目</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2-Stream%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-number">7.3.</span> <span class="toc-text">7.2 Stream消费者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-3-Stream%E6%8C%81%E4%B9%85%E5%8C%96%E8%AE%BE%E7%BD%AE"><span class="toc-number">7.4.</span> <span class="toc-text">7.3 Stream持久化设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E8%BF%B0%E8%AE%BE%E7%BD%AE%E6%88%91%E4%BB%AC%E7%9A%84%E6%B6%88%E8%B4%B9%E8%80%85%EF%BC%8C%E5%9C%A8%E7%94%9F%E4%BA%A7%E8%80%85%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E5%90%8E%EF%BC%8C%E6%B6%88%E8%B4%B9%E8%80%85%E5%90%AF%E5%8A%A8%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96%E6%B6%88%E6%81%AF%EF%BC%8C%E6%89%80%E4%BB%A5%E4%B8%BA%E5%AE%9E%E7%8E%B0%E6%B6%88%E6%81%AF%E6%8C%81%E4%B9%85%E5%8C%96%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E4%B8%BA%E7%BB%84"><span class="toc-number">7.4.1.</span> <span class="toc-text">上述设置我们的消费者，在生产者发送消息后，消费者启动无法获取消息，所以为实现消息持久化需要配置为组;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.5.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E9%93%BE%E8%B7%AF%E8%B7%9F%E8%B8%AA"><span class="toc-number">8.</span> <span class="toc-text">8.    链路跟踪</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%EF%BC%9A-13"><span class="toc-number">8.1.</span> <span class="toc-text">介绍：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zipkin%E6%9C%8D%E5%8A%A1"><span class="toc-number">8.2.</span> <span class="toc-text">zipkin服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%EF%BC%9A-4"><span class="toc-number">8.3.</span> <span class="toc-text">使用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-10"><span class="toc-number">8.4.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-Alibaba"><span class="toc-number">9.</span> <span class="toc-text">9. Alibaba</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-seata%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-number">10.</span> <span class="toc-text">10.    seata分布式事务</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#seata%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">10.1.</span> <span class="toc-text">seata环境配置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-number">11.</span> <span class="toc-text">10.    版本问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#spring-boot%E7%89%88%E6%9C%AC%E6%9F%A5%E8%AF%A2%EF%BC%9A-https-mvnrepository-com-artifact-org-springframework-boot-spring-boot-dependencies"><span class="toc-number">11.0.0.0.1.</span> <span class="toc-text">spring boot版本查询： https:&#x2F;&#x2F;mvnrepository.com&#x2F;artifact&#x2F;org.springframework.boot&#x2F;spring-boot-dependencies</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#spring-cloud%E7%89%88%E6%9C%AC%E6%9F%A5%E8%AF%A2%EF%BC%9Ahttps-mvnrepository-com-artifact-org-springframework-cloud-spring-cloud-dependencies"><span class="toc-number">11.0.0.0.2.</span> <span class="toc-text">spring cloud版本查询：https:&#x2F;&#x2F;mvnrepository.com&#x2F;artifact&#x2F;org.springframework.cloud&#x2F;spring-cloud-dependencies</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AEspring-cloud-%E9%80%89%E6%8B%A9Boot-https-start-spring-io-actuator-info"><span class="toc-number">11.0.0.0.3.</span> <span class="toc-text">根据spring cloud 选择Boot https:&#x2F;&#x2F;start.spring.io&#x2F;actuator&#x2F;info</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
@@ -1607,12 +1308,89 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
@@ -1685,4 +1463,4 @@ var _hmt = _hmt || [];
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>
